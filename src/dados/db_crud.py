@@ -117,3 +117,59 @@ def delete_leitura(connection, id_leitura):
         cursor.execute(query, [id_leitura])
         connection.commit()
         print("Leitura deletada com sucesso.")
+
+# Funções para a tabela 'PREVISOES_IRRIGACAO'
+def create_previsao(connection, timestamp_previsao, estado_irrigacao_previsto, probabilidade, id_sensor):
+    with connection.cursor() as cursor:
+        query = """
+            INSERT INTO previsoes_irrigacao (timestamp_previsao, estado_irrigacao_previsto, probabilidade, id_sensor)
+            VALUES (TO_TIMESTAMP(:timestamp_previsao, 'YYYY-MM-DD"T"HH24:MI:SS'), :estado_irrigacao_previsto, :probabilidade, :id_sensor)
+        """
+        cursor.execute(query, [timestamp_previsao, estado_irrigacao_previsto, probabilidade, id_sensor])
+        connection.commit()
+        print("Previsão criada com sucesso.")
+
+def update_previsao(connection, id_previsao, **kwargs):
+    with connection.cursor() as cursor:
+        query = "UPDATE previsoes_irrigacao SET "
+        query += ", ".join([f"{key} = :{key}" for key in kwargs.keys()])
+        query += " WHERE id_previsao = :id_previsao"
+        kwargs['id_previsao'] = id_previsao
+        cursor.execute(query, kwargs)
+        connection.commit()
+        print("Previsão atualizada com sucesso.")
+
+def delete_previsao(connection, id_previsao):
+    with connection.cursor() as cursor:
+        query = "DELETE FROM previsoes_irrigacao WHERE id_previsao = :id_previsao"
+        cursor.execute(query, [id_previsao])
+        connection.commit()
+        print("Previsão deletada com sucesso.")
+
+def get_previsoes_by_sensor(connection, id_sensor):
+    with connection.cursor() as cursor:
+        query = """
+            SELECT id_previsao, timestamp_previsao, estado_irrigacao_previsto, 
+                   probabilidade, data_geracao, id_sensor
+            FROM previsoes_irrigacao 
+            WHERE id_sensor = :id_sensor
+            ORDER BY timestamp_previsao DESC
+        """
+        cursor.execute(query, [id_sensor])
+        rows = cursor.fetchall()
+        return rows
+
+def get_previsoes_periodo(connection, data_inicio, data_fim):
+    with connection.cursor() as cursor:
+        query = """
+            SELECT id_previsao, timestamp_previsao, estado_irrigacao_previsto, 
+                   probabilidade, data_geracao, id_sensor
+            FROM previsoes_irrigacao 
+            WHERE timestamp_previsao BETWEEN 
+                TO_TIMESTAMP(:data_inicio, 'YYYY-MM-DD"T"HH24:MI:SS') AND 
+                TO_TIMESTAMP(:data_fim, 'YYYY-MM-DD"T"HH24:MI:SS')
+            ORDER BY timestamp_previsao
+        """
+        cursor.execute(query, [data_inicio, data_fim])
+        rows = cursor.fetchall()
+        return rows
