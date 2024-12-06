@@ -15,7 +15,7 @@ parent_dir = str(Path(__file__).parent.parent)
 if parent_dir not in sys.path:
     sys.path.append(parent_dir)
 
-from data_analysis import SensorDataAnalyzer
+from dados.data_analysis import SensorDataAnalyzer
 
 # Configuração da página
 st.set_page_config(
