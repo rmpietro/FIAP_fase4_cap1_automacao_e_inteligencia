@@ -14,7 +14,7 @@ from dados.data_analysis import SensorDataAnalyzer
 st.title("🤖 Modelo Preditivo")
 
 # Treinar modelo
-analyzer = SensorDataAnalyzer(str(Path(__file__).parent.parent.parent / 'dados' / 'dados_app.json'))
+analyzer = SensorDataAnalyzer('src/dados/dados_app.json')
 results = analyzer.train_model()
 
 # Métricas do modelo

@@ -157,7 +157,7 @@ def main_menu():
         if choice == "1":
             create_tables(connection)
         elif choice == "2":
-            json_file_path = 'dados/dados_app.json'
+            json_file_path = 'src/dados/dados_app.json'
             insert_data_from_json(connection, json_file_path)
         elif choice == "3":
             from dashboard.dashboard_dash import app as dashboard_app
