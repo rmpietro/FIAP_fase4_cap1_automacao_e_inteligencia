@@ -2,7 +2,7 @@ import oracledb
 import json
 import requests
 import pandas as pd
-from src.db_crud import read_table, create_tipo_cultura, create_area_cultivo, create_sensor, create_leitura
+from src.dados.db_crud import create_tipo_cultura, create_area_cultivo, create_sensor, create_leitura
 
 # Conexão ao Oracle com entrada de credenciais
 def connect_to_db():
