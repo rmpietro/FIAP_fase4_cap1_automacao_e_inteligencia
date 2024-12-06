@@ -8,12 +8,13 @@ from sklearn.metrics import classification_report, confusion_matrix
 from datetime import datetime, timedelta
 
 class SensorDataAnalyzer:
-    def __init__(self):
+    def __init__(self, db_connection=None):
         self.json_file_path = 'dados/dados_app.json'
         self.model = None
         self.label_encoder = LabelEncoder()
         self.feature_importance = None
         self.accuracy = None
+        self.db_connection = db_connection
 
     # Carrega os dados do JSON e os transforma/normaliza para serem utilizados no modelo
     def load_data(self):
@@ -76,14 +77,15 @@ class SensorDataAnalyzer:
             'confusion_matrix': confusion_matrix(y_test, y_pred)
         }
     
-    def predict_next_24h(self):
-        """Faz previsões para as próximas 24 horas"""
+    def predict_next_24h(self, save_to_db=False):
+        """Faz previsões para as próximas 24 horas e opcionalmente salva no banco"""
         if self.model is None:
             self.train_model()
             
         # Pegar últimos dados conhecidos
         df = self.load_data()
         last_reading = df.iloc[-1]
+        sensor_id = 1  # Usando sensor_id fixo para exemplo - ajuste conforme necessário
         
         # Preparar dados para próximas 24 horas
         next_24h = []
@@ -111,18 +113,32 @@ class SensorDataAnalyzer:
         results = []
         for i, (pred, prob) in enumerate(zip(predictions, probabilities)):
             time = start_time + timedelta(hours=i+1)
-            results.append({
+            prediction_result = {
                 'timestamp': time.strftime('%Y-%m-%d %H:%M:%S'),
                 'previsao': self.label_encoder.inverse_transform([pred])[0],
                 'probabilidade': float(max(prob))
-            })
+            }
+            results.append(prediction_result)
             
+            # Se tiver conexão com banco e save_to_db for True, salva a previsão
+            if save_to_db and self.db_connection:
+                from dados.db_crud import create_previsao
+                create_previsao(
+                    self.db_connection,
+                    prediction_result['timestamp'],
+                    prediction_result['previsao'],
+                    prediction_result['probabilidade'],
+                    sensor_id
+                )
+        
         return results
 
 
 def main():
     # Inicializar analisador
-    analyzer = SensorDataAnalyzer()
+    from main import connect_to_db
+    connection = connect_to_db()
+    analyzer = SensorDataAnalyzer(connection)
     
     # Treinar modelo e mostrar resultados
     results = analyzer.train_model()
@@ -136,8 +152,8 @@ def main():
     print("\nRelatório de Classificação:")
     print(results['classification_report'])
     
-    # Fazer previsões para próximas 24 horas
-    predictions = analyzer.predict_next_24h()
+    # Fazer previsões para próximas 24 horas e salvar no banco
+    predictions = analyzer.predict_next_24h(save_to_db=True)
     
     print("\nPrevisões para próximas 24 horas:")
     for pred in predictions:
