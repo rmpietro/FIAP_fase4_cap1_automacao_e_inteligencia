@@ -166,14 +166,15 @@ def main_menu():
         elif choice == "4":
             print("Iniciando o dashboard Streamlit...")
             try:
-                subprocess.run(["streamlit", "run", "src/dashboard/Home_🏠_Dashboard.py"], check=True)
+                subprocess.run(["streamlit", "run", "src/dashboard/Dashboard_Inicial.py"], check=True)
             except subprocess.CalledProcessError as e:
                 print(f"Erro ao iniciar o Streamlit: {e}")
             except FileNotFoundError:
                 print("Erro: Streamlit não encontrado. Certifique-se de que o Streamlit está instalado.")
-
         elif choice == "5":
             get_chuva_previsao()
+        elif choice == "6":
+
         elif choice == "7":
             print("Encerrando o programa...")
             break
