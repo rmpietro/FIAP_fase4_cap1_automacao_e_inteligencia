@@ -15,26 +15,29 @@ class SensorDataAnalyzer:
         self.label_encoder = LabelEncoder()
         self.feature_importance = None
         self.accuracy = None
-        
+
+    # Carrega os dados do JSON e os transforma/normaliza para serem utilizados no modelo
     def load_data(self):
-        """Carrega e prepara os dados do arquivo JSON"""
+        # Carregando e preparando os dados do arquivo JSON
         with open(self.json_file_path) as f:
             data = json.load(f)
         
         # Converter dados para DataFrame
         df = pd.DataFrame(data['leituras'])
         
-        # Extrair estado de irrigação
+        # Extrair estado de irrigação e motivo de irrigação
+        # No JSON estão como um único objeto, mas vamos separar em duas colunas no dataframe
         df['estado_irrigacao'] = df['irrigacao'].apply(lambda x: x['estado'])
         df['motivo_irrigacao'] = df['irrigacao'].apply(lambda x: x['motivo'])
         df = df.drop('irrigacao', axis=1)
         
-        # Converter timestamp para datetime e extrair características temporais
+        # Converter timestamp para datetime e extrair dia da semana e hora como características
+        # A escolha por essas características foi feita com base no que pensamos, no grupo de alunos, ser a melhor opção para essa análise
         df['timestamp'] = pd.to_datetime(df['timestamp'])
         df['hora'] = df['timestamp'].dt.hour
         df['dia_semana'] = df['timestamp'].dt.dayofweek
         
-        # Codificar variáveis categóricas
+        # Variáveis categóricas - Aplicando Label Encoding pra transformar em valores numéricos, já que trata-se de um Boolean
         df['P'] = self.label_encoder.fit_transform(df['P'])
         df['K'] = self.label_encoder.fit_transform(df['K'])
         df['target'] = self.label_encoder.fit_transform(df['estado_irrigacao'])
@@ -132,7 +135,7 @@ class SensorDataAnalyzer:
 
 def main():
     # Inicializar analisador
-    analyzer = SensorDataAnalyzer('src/dados/dados_app.json')
+    analyzer = SensorDataAnalyzer('./dados/dados_app.json')
     
     # Treinar modelo e mostrar resultados
     results = analyzer.train_model()
