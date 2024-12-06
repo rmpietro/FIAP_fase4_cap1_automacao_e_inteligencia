@@ -40,7 +40,5 @@ CREATE TABLE previsoes_irrigacao (
     timestamp_previsao TIMESTAMP,
     estado_irrigacao_previsto VARCHAR2(20),
     probabilidade NUMBER(5, 2),
-    data_geracao TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    id_sensor NUMBER,
-    FOREIGN KEY (id_sensor) REFERENCES sensor(id_sensor)
+    data_geracao TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );

@@ -13,7 +13,7 @@ from dados.data_analysis import SensorDataAnalyzer
 # Função para carregar os dados
 @st.cache_data
 def load_data():
-    farm_tech_analyzer = SensorDataAnalyzer('src/dados/dados_app.json')
+    farm_tech_analyzer = SensorDataAnalyzer()
     return farm_tech_analyzer.load_data()
 
 # Carregar dados

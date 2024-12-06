@@ -35,6 +35,15 @@ Principais características:
 - Integração com previsão do tempo para otimização da irrigação
 - Interface de linha de comando para gerenciamento do sistema
 
+### Nova tabela criada:
+ • id_previsao: Identificador único gerado automaticamente
+ • timestamp_previsao: Momento para o qual a previsão foi feita
+ • estado_irrigacao_previsto: Estado previsto (ligada/desligada)
+ • probabilidade: Probabilidade da previsão (0-1)
+ • data_geracao: Momento em que a previsão foi gerada
+ • id_sensor: Referência ao sensor que gerou os dados usados na previsão
+
+
 ### Link YouTube demonstrando funcionamento do projeto
 - [Link para o vídeo não-listado](https://www.youtube.com/watch?v=D9-VJ27aex8)
 

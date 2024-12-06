@@ -144,6 +144,7 @@ def main_menu():
     print("-----------------------------------------------------------------------------\n\n")
     while True:
         print("Escolha uma opção:")
+        print("-----")
         print("1. Criar tabelas no banco de dados")
         print("2. Inserir dados do JSON no banco de dados")
         print("3. Iniciar o dashboard criado com a biblioteca Dash")
@@ -151,13 +152,14 @@ def main_menu():
         print("5. Obter previsão de chuva para a cidade de Presidente Prudente (3/3h)")
         print("6. Obter dados de modelo preditivo para as leituras de sensores feitas")
         print("7. Sair")
+        print("-----")
         
-        choice = input("Digite o número da opção desejada: ")
+        choice = input("Digite o número da opção desejada:")
 
         if choice == "1":
             create_tables(connection)
         elif choice == "2":
-            json_file_path = 'src/dados/dados_app.json'
+            json_file_path = 'dados/dados_app.json'
             insert_data_from_json(connection, json_file_path)
         elif choice == "3":
             from dashboard.dashboard_dash import app as dashboard_app
@@ -165,7 +167,7 @@ def main_menu():
         elif choice == "4":
             print("Iniciando o dashboard Streamlit...")
             try:
-                subprocess.run(["streamlit", "run", "src/dashboard/Dashboard_Inicial.py"], check=True)
+                subprocess.run(["streamlit", "run", "dashboard/Dashboard_Inicial.py"], check=True)
             except subprocess.CalledProcessError as e:
                 print(f"Erro ao iniciar o Streamlit: {e}")
             except FileNotFoundError:

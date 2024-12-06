@@ -119,7 +119,7 @@ def delete_leitura(connection, id_leitura):
         print("Leitura deletada com sucesso.")
 
 # Funções para a tabela 'PREVISOES_IRRIGACAO'
-def create_previsao(connection, timestamp_previsao, estado_irrigacao_previsto, probabilidade, id_sensor):
+def create_previsao(connection, timestamp_previsao, estado_irrigacao_previsto, probabilidade):
     with connection.cursor() as cursor:
         # Converter timestamp para formato aceito pelo Oracle
         if isinstance(timestamp_previsao, str):
@@ -127,12 +127,11 @@ def create_previsao(connection, timestamp_previsao, estado_irrigacao_previsto, p
             timestamp_previsao = timestamp_previsao.replace('T', ' ')
         
         query = """
-            INSERT INTO previsoes_irrigacao (timestamp_previsao, estado_irrigacao_previsto, probabilidade, id_sensor)
-            VALUES (TO_TIMESTAMP(:1, 'YYYY-MM-DD HH24:MI:SS'), :2, :3, :4)
+            INSERT INTO previsoes_irrigacao (timestamp_previsao, estado_irrigacao_previsto, probabilidade)
+            VALUES (TO_TIMESTAMP(:1, 'YYYY-MM-DD HH24:MI:SS'), :2, :3)
         """
-        cursor.execute(query, [timestamp_previsao, estado_irrigacao_previsto, probabilidade, id_sensor])
+        cursor.execute(query, [timestamp_previsao, estado_irrigacao_previsto, probabilidade])
         connection.commit()
-        print("Previsão criada com sucesso.")
 
 def update_previsao(connection, id_previsao, **kwargs):
     with connection.cursor() as cursor:
@@ -151,24 +150,11 @@ def delete_previsao(connection, id_previsao):
         connection.commit()
         print("Previsão deletada com sucesso.")
 
-def get_previsoes_by_sensor(connection, id_sensor):
-    with connection.cursor() as cursor:
-        query = """
-            SELECT id_previsao, timestamp_previsao, estado_irrigacao_previsto, 
-                   probabilidade, data_geracao, id_sensor
-            FROM previsoes_irrigacao 
-            WHERE id_sensor = :id_sensor
-            ORDER BY timestamp_previsao DESC
-        """
-        cursor.execute(query, [id_sensor])
-        rows = cursor.fetchall()
-        return rows
-
 def get_previsoes_periodo(connection, data_inicio, data_fim):
     with connection.cursor() as cursor:
         query = """
             SELECT id_previsao, timestamp_previsao, estado_irrigacao_previsto, 
-                   probabilidade, data_geracao, id_sensor
+                   probabilidade, data_geracao
             FROM previsoes_irrigacao 
             WHERE timestamp_previsao BETWEEN 
                 TO_TIMESTAMP(:data_inicio, 'YYYY-MM-DD"T"HH24:MI:SS') AND 

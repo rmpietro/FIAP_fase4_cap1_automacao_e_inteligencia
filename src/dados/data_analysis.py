@@ -127,8 +127,7 @@ class SensorDataAnalyzer:
                     self.db_connection,
                     prediction_result['timestamp'],
                     prediction_result['previsao'],
-                    prediction_result['probabilidade'],
-                    sensor_id
+                    prediction_result['probabilidade']
                 )
         
         return results
