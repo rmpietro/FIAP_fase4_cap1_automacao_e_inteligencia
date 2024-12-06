@@ -7,7 +7,15 @@ import json
 import sys
 import os
 
-from src.data_analysis import SensorDataAnalyzer
+import sys
+from pathlib import Path
+
+# Adicionar diretório pai ao PYTHONPATH
+parent_dir = str(Path(__file__).parent.parent)
+if parent_dir not in sys.path:
+    sys.path.append(parent_dir)
+
+from data_analysis import SensorDataAnalyzer
 
 # Configuração da página
 st.set_page_config(
@@ -19,7 +27,7 @@ st.set_page_config(
 # Função para carregar os dados
 @st.cache_data
 def load_data():
-    farm_tech_analyzer = SensorDataAnalyzer('../dados/dados_app.json')
+    farm_tech_analyzer = SensorDataAnalyzer(str(Path(__file__).parent.parent / 'dados' / 'dados_app.json'))
     return farm_tech_analyzer.load_data()
 
 # Carregar dados
@@ -80,7 +88,7 @@ elif page == "Modelo Preditivo":
     st.title("🤖 Modelo Preditivo")
     
     # Treinar modelo
-    analyzer = SensorDataAnalyzer('../dados/dados_app.json')
+    analyzer = SensorDataAnalyzer(str(Path(__file__).parent.parent / 'dados' / 'dados_app.json'))
     results = analyzer.train_model()
     
     # Métricas do modelo
