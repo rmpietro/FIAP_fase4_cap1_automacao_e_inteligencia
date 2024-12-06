@@ -135,7 +135,7 @@ class SensorDataAnalyzer:
 
 def main():
     # Inicializar analisador
-    analyzer = SensorDataAnalyzer('dados_app.json')
+    analyzer = SensorDataAnalyzer('./dados_app.json')
     
     # Treinar modelo e mostrar resultados
     results = analyzer.train_model()
