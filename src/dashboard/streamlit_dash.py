@@ -30,14 +30,21 @@ def load_data():
 # Carregar dados
 df = load_data()
 
-# Sidebar para navegação
-page = st.sidebar.selectbox(
-    "Escolha uma página",
-    ["Análise Exploratória", "Modelo Preditivo"]
+# Links de navegação no topo
+st.markdown(
+    '<div style="text-align: center;">'
+    '<a href="?page=exploratory" target="_self" style="margin: 0 10px;">📊 Análise Exploratória</a> | '
+    '<a href="?page=predictive" target="_self" style="margin: 0 10px;">🤖 Modelo Preditivo</a>'
+    '</div>', 
+    unsafe_allow_html=True
 )
 
+# Obter parâmetro da URL
+query_params = st.experimental_get_query_params()
+page = query_params.get("page", ["exploratory"])[0]
+
 # Página de Análise Exploratória
-if page == "Análise Exploratória":
+if page == "exploratory":
     st.title("📊 Análise Exploratória dos Dados")
 
     # Análise Univariada
@@ -81,7 +88,7 @@ if page == "Análise Exploratória":
     st.plotly_chart(fig_corr)
 
 # Página do Modelo Preditivo
-elif page == "Modelo Preditivo":
+elif page == "predictive":
     st.title("🤖 Modelo Preditivo")
 
     # Treinar modelo
