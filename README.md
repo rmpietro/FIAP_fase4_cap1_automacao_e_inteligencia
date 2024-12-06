@@ -74,7 +74,7 @@ Nova tabela adicionada com os seguintes campos, abaixo explicados:
 - LDR, com leitura anlógica como simulador de sensor de pH do solo;
 - Dois pushbuttons para simular a leitura de nutrientes P e K (presentes no solo ou ausentes no solo);
 - Um relé para simular o acionamento de uma bomba de água para irrigação.
-- Um display LCD (I2C - 20 x 4) para exibir informações sobre as leituras efetuadas e da bomda de irrigação.
+- Um display LCD (I2C - 20 x 4) para exibir informações sobre as leituras efetuadas e da bomba de irrigação.
 
 #### Critérios Utilizados para a ativação da bomba de água (irrigação) - presentes no código C++ utilizado para programar a ESP32:
 
