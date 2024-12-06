@@ -5,12 +5,11 @@ from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.preprocessing import LabelEncoder
 from sklearn.metrics import classification_report, confusion_matrix
-import joblib
 from datetime import datetime, timedelta
 
 class SensorDataAnalyzer:
-    def __init__(self, json_file_path):
-        self.json_file_path = json_file_path
+    def __init__(self):
+        self.json_file_path = 'dados/dados_app.json'
         self.model = None
         self.label_encoder = LabelEncoder()
         self.feature_importance = None
@@ -119,30 +118,18 @@ class SensorDataAnalyzer:
             })
             
         return results
-    
-    def save_model(self, filepath='models/sensor_model.joblib'):
-        """Salva o modelo treinado"""
-        if self.model is not None:
-            joblib.dump(self.model, filepath)
-            print(f"Modelo salvo em {filepath}")
-        else:
-            print("Modelo ainda não foi treinado")
-    
-    def load_saved_model(self, filepath='models/sensor_model.joblib'):
-        """Carrega um modelo salvo"""
-        self.model = joblib.load(filepath)
-        print(f"Modelo carregado de {filepath}")
+
 
 def main():
     # Inicializar analisador
-    analyzer = SensorDataAnalyzer('dados/dados_app.json')
+    analyzer = SensorDataAnalyzer()
     
     # Treinar modelo e mostrar resultados
     results = analyzer.train_model()
     
     print("\nResultados do Treinamento:")
     print(f"Acurácia: {results['accuracy']:.2f}")
-    
+
     print("\nImportância das Features:")
     print(results['feature_importance'])
     
@@ -157,10 +144,7 @@ def main():
         print(f"Horário: {pred['timestamp']}")
         print(f"Previsão: {pred['previsao']}")
         print(f"Probabilidade: {pred['probabilidade']:.2f}")
-        print("---")
-    
-    # Salvar modelo
-    analyzer.save_model()
+        print("---\n\n")
 
 if __name__ == "__main__":
     main()
