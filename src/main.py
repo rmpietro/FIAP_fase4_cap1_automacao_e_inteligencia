@@ -3,6 +3,7 @@ import json
 import requests
 import pandas as pd
 import subprocess
+from dados.data_analysis import main as data_analysis_main
 from src.dados.db_crud import create_tipo_cultura, create_area_cultivo, create_sensor, create_leitura
 
 # Conexão ao Oracle com entrada de credenciais
@@ -174,6 +175,8 @@ def main_menu():
         elif choice == "5":
             get_chuva_previsao()
         elif choice == "6":
+            print("\nExecutando análise preditiva dos dados...")
+            data_analysis_main()
 
         elif choice == "7":
             print("Encerrando o programa...")
