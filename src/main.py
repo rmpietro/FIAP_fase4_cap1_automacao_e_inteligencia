@@ -11,7 +11,6 @@ def connect_to_db():
     try:
         with open("config/config.json") as config_file:
             config = json.load(config_file)
-            print("------Programa de Monitoramento de Culturas------\n")
         return oracledb.connect(
             user=config['user'],
             password=config['password'],
@@ -46,7 +45,7 @@ def create_tables(connection):
         with connection.cursor() as cursor:
             cursor.execute("""SELECT COUNT(*) FROM user_Tables WHERE table_name IN ('AREA_CULTIVO', 'LEITURAS', 'SENSOR', 'TIPO_CULTURA')""")
             if cursor.fetchone()[0] != 0:
-                print("Estrutura de Banco de Dados encontrada.")
+                print("\n---> Estrutura de Banco de Dados encontrada e já criada. <---\n\n")
                 return
 
         # Se as tabelas não existem, cria-as usando o script DDL
@@ -66,9 +65,9 @@ def create_tables(connection):
                     print(f"Comando executado com sucesso:\n{block}\n")
 
         connection.commit()
-        print("Todas as tabelas foram criadas com sucesso.")
+        print("\n--> Todas as tabelas foram criadas com sucesso. <--\n\n")
     except oracledb.Error as e:
-        print(f"Ocorreu um erro ao executar o DDL: {e}")
+        print(f"\nOcorreu um erro ao executar o DDL: {e}\n\n")
 
 # Função para inserir dados a partir do JSON
 def insert_data_from_json(connection, json_file_path):
@@ -77,7 +76,7 @@ def insert_data_from_json(connection, json_file_path):
         SELECT COUNT(*) FROM LEITURAS
         """)
         if cursor.fetchone()[0] != 0:
-            print("Tabelas aparentemente já estão populadas com pelo menos uma linha. Dados não serão importados.")
+            print("\n--> Tabelas aparentemente já estão populadas com pelo menos uma linha. Dados não serão importados. <-- \n\n")
             return
 
     with open(json_file_path, 'r') as file:
@@ -110,7 +109,7 @@ def insert_data_from_json(connection, json_file_path):
             1  # Assumindo id_sensor 1 para todas as leituras, ajuste conforme necessário
         )
 
-    print("Dados inseridos com sucesso a partir do JSON.")
+    print("\n--> Dados inseridos com sucesso a partir do JSON. >-- \n\n")
 
 def get_chuva_previsao():
     url = "http://api.openweathermap.org/data/2.5/forecast"
@@ -141,11 +140,10 @@ def get_chuva_previsao():
 # Função principal para uso do script
 def main_menu():
     connection = connect_to_db()
-
+    print("\n\nBem-vindo ao Programa de Monitoramento de Culturas - FarmTech!")
+    print("-----------------------------------------------------------------------------\n\n")
     while True:
-        print("Bem-vindo ao Programa de Monitoramento de Culturas - FarmTech!")
-        print("-----------------------------------------------------------------------------")
-        print("\nEscolha uma opção:")
+        print("Escolha uma opção:")
         print("1. Criar tabelas no banco de dados")
         print("2. Inserir dados do JSON no banco de dados")
         print("3. Iniciar o dashboard criado com a biblioteca Dash")
@@ -177,7 +175,6 @@ def main_menu():
         elif choice == "6":
             print("\nExecutando análise preditiva dos dados...")
             data_analysis_main()
-
         elif choice == "7":
             print("Encerrando o programa...")
             break
