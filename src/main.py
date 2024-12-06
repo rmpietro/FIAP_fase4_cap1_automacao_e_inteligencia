@@ -94,20 +94,19 @@ def insert_data_from_json(connection, json_file_path):
         create_sensor(connection, sensor["id_sensor"], sensor["id_area"], sensor["descricao"], sensor["tipo"], sensor["modelo"])
 
     # Inserindo dados na tabela leituras
-    for leitura_list in data["leituras"]:
-        for leitura in leitura_list:
-            create_leitura(
-                connection,
-                leitura["timestamp"],
-                leitura["temp"],
-                leitura["humid"],
-                leitura["P"],
-                leitura["K"],
-                leitura["pH"],
-                leitura["irrigacao"]["estado"],
-                leitura["irrigacao"]["motivo"],
-                1  # Assumindo id_sensor 1 para todas as leituras, ajuste conforme necessário
-            )
+    for leitura in data["leituras"]:
+        create_leitura(
+            connection,
+            leitura["timestamp"],
+            leitura["temp"],
+            leitura["hum"],  # Corrigido de "humid" para "hum"
+            leitura["P"],
+            leitura["K"],
+            leitura["pH"],
+            leitura["irrigacao"]["estado"],
+            leitura["irrigacao"]["motivo"],
+            1  # Assumindo id_sensor 1 para todas as leituras, ajuste conforme necessário
+        )
 
     print("Dados inseridos com sucesso a partir do JSON.")
 
