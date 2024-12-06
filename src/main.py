@@ -2,6 +2,7 @@ import oracledb
 import json
 import requests
 import pandas as pd
+import subprocess
 from src.dados.db_crud import create_tipo_cultura, create_area_cultivo, create_sensor, create_leitura
 
 # Conexão ao Oracle com entrada de credenciais
@@ -163,8 +164,13 @@ def main_menu():
             from dashboard.dashboard_dash import app as dashboard_app
             dashboard_app.run_server(debug=False)
         elif choice == "4":
-            from dashboard.Dashboard_Inicial import app as dashboard_app
-            # Executar linha de comando para iniciar o dashboard Streamlit
+            print("Iniciando o dashboard Streamlit...")
+            try:
+                subprocess.run(["streamlit", "run", "src/dashboard/Home_🏠_Dashboard.py"], check=True)
+            except subprocess.CalledProcessError as e:
+                print(f"Erro ao iniciar o Streamlit: {e}")
+            except FileNotFoundError:
+                print("Erro: Streamlit não encontrado. Certifique-se de que o Streamlit está instalado.")
 
         elif choice == "5":
             get_chuva_previsao()
