@@ -6,7 +6,7 @@
 
 <br>
 
-# Cap 1 - Máquina Agrícola
+# Cap 1 - Automação e inteligência na FarmTech Solutions
 
 ## Nome do grupo
 
@@ -26,30 +26,44 @@
 
 ## 📜 Descrição
 
-Este projeto implementa um sistema de monitoramento e irrigação inteligente para agricultura, utilizando sensores IoT e um banco de dados Oracle. O sistema coleta dados de temperatura, umidade, níveis de nutrientes (P e K) e pH do solo.
+Este projeto agrega novas funcionalidades ao projeto anterior - A Máquina Agrícola, entregue na Fase 3. 
 
-Principais características:
+#### Principais características do Projeto-Base, da Fase 2:
 - Coleta e armazenamento de dados de sensores
 - Dashboard para visualização de dados
 - Controle automático de irrigação baseado em condições do solo
 - Integração com previsão do tempo para otimização da irrigação
 - Interface de linha de comando para gerenciamento do sistema
 
-### Nova tabela criada:
- • id_previsao: Identificador único gerado automaticamente
- • timestamp_previsao: Momento para o qual a previsão foi feita
- • estado_irrigacao_previsto: Estado previsto (ligada/desligada)
- • probabilidade: Probabilidade da previsão (0-1)
- • data_geracao: Momento em que a previsão foi gerada
- • id_sensor: Referência ao sensor que gerou os dados usados na previsão
+#### Características adicionadas neste projeto:
+- Análise estatística e preditiva dos dados coletados utilizando Scikit-learn;
+- Dashboard visual criado com Streamlit para exibição de gráficos e tabelas;
+- Inclusão de visor de LCD no projeto simulado no Wokwi (URL permanece a mesma);
+- Inclusão de monitoramento com Serial Plotter no Wokwi;
+- Otimização de algumas variáveis e código no script C++ para a ESP32;
+
+##### Alterações na base de dados para armazenar as previsões geradas:
+Nova tabela adicionada com os seguintes campos, abaixo explicados:
+- id_previsao: Identificador único gerado automaticamente
+- timestamp_previsao: Momento para o qual a previsão foi feita
+- estado_irrigacao_previsto: Estado previsto (ligada/desligada)
+- probabilidade: Probabilidade da previsão (0-1)
+- data_geracao: Momento em que a previsão foi gerada
 
 
 ### Link YouTube demonstrando funcionamento do projeto
-- [Link para o vídeo não-listado](https://www.youtube.com/watch?v=D9-VJ27aex8)
+- [Link para o vídeo não-listado](https://youtu.be/0jjceJIWxE8)
 
-### Diagrama eletrônico do projeto com ESP32
+### Diagrama eletrônico do projeto com ESP32 com LCD
 <p align="center">
-<img src="assets/sensores.png" alt="Diagrama ESP32" width=60% height=60%>
+<img src="assets/sensores_lcd_fase4.png" alt="Diagrama ESP32" width=60% height=60%>
+</p>
+
+<br>
+
+### Diagrama eletrônico do projeto com ESP32 com foco no SERIAL PLOTTER
+<p align="center">
+<img src="assets/sensores_plotter_fase4.png" alt="Diagrama ESP32" width=60% height=60%>
 </p>
 
 <br>
@@ -60,6 +74,7 @@ Principais características:
 - LDR, com leitura anlógica como simulador de sensor de pH do solo;
 - Dois pushbuttons para simular a leitura de nutrientes P e K (presentes no solo ou ausentes no solo);
 - Um relé para simular o acionamento de uma bomba de água para irrigação.
+- Um display LCD (I2C - 20 x 4) para exibir informações sobre as leituras efetuadas e da bomda de irrigação.
 
 #### Critérios Utilizados para a ativação da bomba de água (irrigação) - presentes no código C++ utilizado para programar a ESP32:
 
@@ -77,10 +92,13 @@ Dentre os arquivos e pastas presentes na raiz do projeto, definem-se:
 - <b>scripts</b>: não utilizada nesse projeto
 - <b>src</b>: Todo o código fonte criado para o desenvolvimento do projeto.
 - <b>src/config</b>: Utilizada para armazenar arquivos de configuração do projeto, como o config.json, utilizado para as credenciais do Banco de Dados (não é a uma solução profissional adequada, mas atende aos requisitos acadêmicos do projeto).
-- <b>src/dados</b>: Utilizada para armazenar arquivos de dados, como o arquivo JSON com os dados dos sensores.
-- <b>src/dashboard</b>: Utilizada para armazenar arquivos relacionados ao dashboard do projeto.
+- <b>src/dados</b>: Utilizada para armazenar a lógica de dados e arquivos de armazenamento de dados locais.
+- <b>src/dashboard</b>: Utilizada para armazenar arquivos relacionados ao dashboard do projeto:
+  - O dashboard feito com a lib Dash está no arquivo `src/dashboard/dashboard.py`;
+  - O dashboard feito com a lib Streamlit está no arquivo `src/dashboard/dashboard_streamlit.py` e na pasta `src/dashboard/pages`;
 - <b>src/R</b>: Utilizada para armazenar arquivos de scripts em R.
 - <b>README.md</b>: arquivo que serve como guia e explicação geral sobre o projeto (o mesmo que você está lendo agora).
+- <b>src/wokwi</b>: Dados relacionados ao projeto no wokwi, como código-fonte C++ e link para o projeto na Web
 
 ## 🔧 Como executar o projeto
 
@@ -93,16 +111,16 @@ A saída do console do Wokwi está formatada como objetos JSON com os valores do
 
 2. Clone o repositório:
    ```
-   git clone https://github.com/rmpietro/FIAP_fase3_cap1_maquina_agricola.git
+   git clone https://github.com/rmpietro/FIAP_fase4_cap1_automacao_e_inteligencia.git
    cd nome-do-repositorio
    ```
 
 3. Instale as dependências:
    ```
-   pip install oracledb pandas requests
+   pip install oracledb pandas requests scikit-learn numpy matplotlib streamlit
    ```
 
-4. Configure as credenciais do banco de dados Oracle no arquivo `config.json` ou siga as instruções durante a execução para criar o arquivo.
+4. Configure as credenciais do banco de dados Oracle seguindo as instruções durante a execução para criar o arquivo.
 
 
 5. Execute o script principal:
@@ -138,6 +156,7 @@ Ele deve ser executado de modo separado do programa em Python e preferencialment
 ## 🗃 Histórico de lançamentos
 
 * 0.1.0 - 13/11/2024
+* 0.2.0 - 04/12/2024
 
 ## 📋 Licença
 
