@@ -141,12 +141,16 @@ def main_menu():
     connection = connect_to_db()
 
     while True:
+        print("Bem-vindo ao Programa de Monitoramento de Culturas - FarmTech!")
+        print("-----------------------------------------------------------------------------")
         print("\nEscolha uma opção:")
         print("1. Criar tabelas no banco de dados")
         print("2. Inserir dados do JSON no banco de dados")
-        print("3. Iniciar o dashboard")
-        print("4. Obter previsão de chuva para a cidade de Presidente Prudente (3/3h)")
-        print("5. Sair")
+        print("3. Iniciar o dashboard criado com a biblioteca Dash")
+        print("4. Iniciar o dashboard criado com a biblioteca Streamlit")
+        print("5. Obter previsão de chuva para a cidade de Presidente Prudente (3/3h)")
+        print("6. Obter dados de modelo preditivo para as leituras de sensores feitas")
+        print("7. Sair")
         
         choice = input("Digite o número da opção desejada: ")
 
@@ -158,10 +162,13 @@ def main_menu():
         elif choice == "3":
             from dashboard.dashboard_dash import app as dashboard_app
             dashboard_app.run_server(debug=False)
-            print("Dashboard não implementado.")
         elif choice == "4":
-            get_chuva_previsao()
+            from dashboard.Dashboard_Inicial import app as dashboard_app
+            # Executar linha de comando para iniciar o dashboard Streamlit
+
         elif choice == "5":
+            get_chuva_previsao()
+        elif choice == "7":
             print("Encerrando o programa...")
             break
         else:
