@@ -30,18 +30,16 @@ def load_data():
 # Carregar dados
 df = load_data()
 
-# Links de navegação no topo
-st.markdown(
-    '<div style="text-align: center;">'
-    '<a href="?page=exploratory" target="_self" style="margin: 0 10px;">📊 Análise Exploratória</a> | '
-    '<a href="?page=predictive" target="_self" style="margin: 0 10px;">🤖 Modelo Preditivo</a>'
-    '</div>', 
-    unsafe_allow_html=True
+# Sidebar menu
+st.sidebar.title("Menu de Navegação")
+page = st.sidebar.radio(
+    "Selecione uma página",
+    ["📊 Análise Exploratória", "🤖 Modelo Preditivo"],
+    label_visibility="collapsed"
 )
 
-# Obter parâmetro da URL
-query_params = st.experimental_get_query_params()
-page = query_params.get("page", ["exploratory"])[0]
+# Converter seleção do menu para o valor da página
+page = "exploratory" if page == "📊 Análise Exploratória" else "predictive"
 
 # Página de Análise Exploratória
 if page == "exploratory":
