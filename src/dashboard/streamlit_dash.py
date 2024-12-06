@@ -7,9 +7,7 @@ import json
 import sys
 import os
 
-# Adicionar o diretório pai ao PATH para importar data_analysis
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from data_analysis import SensorDataAnalyzer
+from src.data_analysis import SensorDataAnalyzer
 
 # Configuração da página
 st.set_page_config(
@@ -21,8 +19,8 @@ st.set_page_config(
 # Função para carregar os dados
 @st.cache_data
 def load_data():
-    analyzer = SensorDataAnalyzer('../dados/dados_app.json')
-    return analyzer.load_data()
+    farm_tech_analyzer = SensorDataAnalyzer('../dados/dados_app.json')
+    return farm_tech_analyzer.load_data()
 
 # Carregar dados
 df = load_data()
