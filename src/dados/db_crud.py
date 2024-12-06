@@ -121,9 +121,14 @@ def delete_leitura(connection, id_leitura):
 # Funções para a tabela 'PREVISOES_IRRIGACAO'
 def create_previsao(connection, timestamp_previsao, estado_irrigacao_previsto, probabilidade, id_sensor):
     with connection.cursor() as cursor:
+        # Converter timestamp para formato aceito pelo Oracle
+        if isinstance(timestamp_previsao, str):
+            # Remove T e converte para formato Oracle
+            timestamp_previsao = timestamp_previsao.replace('T', ' ')
+        
         query = """
             INSERT INTO previsoes_irrigacao (timestamp_previsao, estado_irrigacao_previsto, probabilidade, id_sensor)
-            VALUES (TO_TIMESTAMP(:timestamp_previsao, 'YYYY-MM-DD"T"HH24:MI:SS'), :estado_irrigacao_previsto, :probabilidade, :id_sensor)
+            VALUES (TO_TIMESTAMP(:1, 'YYYY-MM-DD HH24:MI:SS'), :2, :3, :4)
         """
         cursor.execute(query, [timestamp_previsao, estado_irrigacao_previsto, probabilidade, id_sensor])
         connection.commit()

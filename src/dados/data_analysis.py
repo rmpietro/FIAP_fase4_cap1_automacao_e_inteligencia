@@ -114,7 +114,7 @@ class SensorDataAnalyzer:
         for i, (pred, prob) in enumerate(zip(predictions, probabilities)):
             time = start_time + timedelta(hours=i+1)
             prediction_result = {
-                'timestamp': time.strftime('%Y-%m-%d %H:%M:%S'),
+                'timestamp': time.strftime('%Y-%m-%d %H:%M:%S'),  # Formato compatível com Oracle
                 'previsao': self.label_encoder.inverse_transform([pred])[0],
                 'probabilidade': float(max(prob))
             }
